@@ -173,6 +173,78 @@
     .search-btn:hover { box-shadow: 0 4px 20px rgba(201,151,58,.5); transform: translateY(-1px); }
     .search-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 
+    /* ── Search wrap & panels ─────────────────────── */
+    .search-wrap { position: relative; max-width: 680px; margin: 0 auto; }
+    .search-wrap .search-bar { max-width: 100%; margin: 0; }
+
+    /* Type dropdown */
+    .sf-dropdown {
+      position: absolute; top: calc(100% + 12px); left: 0;
+      background: rgba(28,24,20,.97); border: 1px solid rgba(201,151,58,.3);
+      border-radius: 18px; padding: 8px; min-width: 210px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.7), 0 0 0 1px rgba(201,151,58,.07);
+      backdrop-filter: blur(20px); z-index: 300;
+      opacity: 0; transform: translateY(8px); pointer-events: none;
+      transition: opacity .2s, transform .2s;
+    }
+    .sf-dropdown.open { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .sf-dropdown-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 11px;
+      font-size: 13.5px; color: var(--text);
+      cursor: pointer; border: none; background: none;
+      width: 100%; text-align: left; transition: background .15s;
+    }
+    .sf-dropdown-item:hover { background: rgba(201,151,58,.1); }
+    .sf-dropdown-item.active { color: var(--gold-lt); font-weight: 700; }
+    .di-icon { font-size: 16px; width: 24px; flex-shrink: 0; }
+
+    /* Date picker */
+    .date-picker {
+      position: absolute; top: calc(100% + 12px); right: 0;
+      background: rgba(28,24,20,.97); border: 1px solid rgba(201,151,58,.3);
+      border-radius: 18px; padding: 20px; width: 310px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.7), 0 0 0 1px rgba(201,151,58,.07);
+      backdrop-filter: blur(20px); z-index: 300;
+      opacity: 0; transform: translateY(8px); pointer-events: none;
+      transition: opacity .2s, transform .2s;
+    }
+    .date-picker.open { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .dp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .dp-nav-btn {
+      background: none; border: 1px solid var(--border); color: var(--text);
+      border-radius: 8px; width: 30px; height: 30px; cursor: pointer;
+      font-size: 16px; display: flex; align-items: center; justify-content: center;
+      transition: background .15s, border-color .15s; line-height: 1;
+    }
+    .dp-nav-btn:hover { background: rgba(201,151,58,.15); border-color: rgba(201,151,58,.5); }
+    .dp-month-label { font-family: Georgia,serif; font-weight: 700; font-size: .92rem; color: var(--text); }
+    .dp-days-header, .dp-days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+    .dp-day-name { text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; padding-bottom: 8px; }
+    .dp-day {
+      text-align: center; font-size: 13px; padding: 8px 2px;
+      border-radius: 8px; cursor: pointer; color: var(--text);
+      transition: background .12s; line-height: 1; border: none; background: none; width: 100%;
+    }
+    .dp-day:hover:not(.dp-empty):not(.dp-past) { background: rgba(201,151,58,.2); }
+    .dp-empty { visibility: hidden; pointer-events: none; }
+    .dp-past { opacity: .28; pointer-events: none; }
+    .dp-today { color: var(--gold-lt); font-weight: 700; }
+    .dp-start, .dp-end { background: linear-gradient(135deg,var(--gold-lt),var(--gold)) !important; color: #1a1714 !important; font-weight: 700; }
+    .dp-in-range { background: rgba(201,151,58,.18); border-radius: 0; }
+    .dp-start { border-radius: 8px 0 0 8px; }
+    .dp-end   { border-radius: 0 8px 8px 0; }
+    .dp-start.dp-end { border-radius: 8px; }
+    .dp-footer { margin-top: 14px; display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border); }
+    .dp-range-label { font-size: 12px; color: var(--muted); }
+    .dp-confirm {
+      background: linear-gradient(135deg,var(--gold-lt),var(--gold)); color: #1a1714;
+      border: none; border-radius: 9px; padding: 8px 20px;
+      font-size: 12.5px; font-weight: 700; cursor: pointer; letter-spacing: .04em;
+      transition: box-shadow .2s;
+    }
+    .dp-confirm:hover { box-shadow: 0 4px 16px rgba(201,151,58,.5); }
+
     /* Hero stats (kept from original) */
     .hero-stats {
       display: flex; gap: 2.5rem; margin-top: 3rem;
@@ -461,41 +533,77 @@
       <p class="hero-sub">Discover the perfect rental car near you — transparent pricing, zero hassle.</p>
 
       <!-- Search bar -->
-      <div class="search-bar">
-        <button class="sf" onclick="cycleType()" id="sf-type-btn">
-          <span class="sf-icon">🚗</span>
-          <div class="sf-body">
-            <div class="sf-label" id="sf-type-label">All types</div>
+      <div class="search-wrap">
+        <div class="search-bar">
+          <button class="sf" onclick="toggleTypeDropdown()" id="sf-type-btn">
+            <span class="sf-icon" id="sf-type-icon">🚗</span>
+            <div class="sf-body">
+              <div class="sf-label" id="sf-type-label">All types</div>
+            </div>
+            <span class="sf-caret">▾</span>
+          </button>
+
+          <div class="sf-divider"></div>
+
+          <button class="sf" style="flex:1.8;" onclick="promptLocation()">
+            <span class="sf-icon">📍</span>
+            <div class="sf-body">
+              <div class="sf-label">Where to?</div>
+              <div class="sf-sub" id="sf-loc-sub">City, airport, or address</div>
+            </div>
+          </button>
+
+          <div class="sf-divider"></div>
+
+          <button class="sf" style="flex:1.4;" id="sf-dates-btn" onclick="toggleDatePicker()">
+            <span class="sf-icon">📅</span>
+            <div class="sf-body">
+              <div class="sf-label">Dates</div>
+              <div class="sf-sub" id="sf-dates-sub">Add travel dates</div>
+            </div>
+          </button>
+
+          <button class="search-btn" onclick="doSearch()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            Search
+          </button>
+        </div>
+
+        <!-- Type dropdown panel -->
+        <div class="sf-dropdown" id="sf-type-dropdown">
+          <button class="sf-dropdown-item active" onclick="selectType(this,'All types','🚗')"><span class="di-icon">🚗</span> All types</button>
+          <button class="sf-dropdown-item" onclick="selectType(this,'SUVs','🛻')"><span class="di-icon">🛻</span> SUVs</button>
+          <button class="sf-dropdown-item" onclick="selectType(this,'Sedans','🚙')"><span class="di-icon">🚙</span> Sedans</button>
+          <button class="sf-dropdown-item" onclick="selectType(this,'Pickup','🚚')"><span class="di-icon">🚚</span> Pickup</button>
+          <button class="sf-dropdown-item" onclick="selectType(this,'Luxury','✨')"><span class="di-icon">✨</span> Luxury</button>
+          <button class="sf-dropdown-item" onclick="selectType(this,'Vans','🚐')"><span class="di-icon">🚐</span> Vans</button>
+          <button class="sf-dropdown-item" onclick="selectType(this,'Electric','⚡')"><span class="di-icon">⚡</span> Electric</button>
+        </div>
+
+        <!-- Date picker panel -->
+        <div class="date-picker" id="sf-date-picker">
+          <div class="dp-header">
+            <button class="dp-nav-btn" onclick="dpPrevMonth()">&#8249;</button>
+            <span class="dp-month-label" id="dp-month-label"></span>
+            <button class="dp-nav-btn" onclick="dpNextMonth()">&#8250;</button>
           </div>
-          <span class="sf-caret">▾</span>
-        </button>
-
-        <div class="sf-divider"></div>
-
-        <button class="sf" style="flex:1.8;" onclick="promptLocation()">
-          <span class="sf-icon">📍</span>
-          <div class="sf-body">
-            <div class="sf-label">Where to?</div>
-            <div class="sf-sub" id="sf-loc-sub">City, airport, or address</div>
+          <div class="dp-days-header">
+            <div class="dp-day-name">Su</div>
+            <div class="dp-day-name">Mo</div>
+            <div class="dp-day-name">Tu</div>
+            <div class="dp-day-name">We</div>
+            <div class="dp-day-name">Th</div>
+            <div class="dp-day-name">Fr</div>
+            <div class="dp-day-name">Sa</div>
           </div>
-        </button>
-
-        <div class="sf-divider"></div>
-
-        <button class="sf" style="flex:1.4;" onclick="promptDates()">
-          <span class="sf-icon">📅</span>
-          <div class="sf-body">
-            <div class="sf-label">Dates</div>
-            <div class="sf-sub" id="sf-dates-sub">Add travel dates</div>
+          <div class="dp-days-grid" id="dp-grid"></div>
+          <div class="dp-footer">
+            <span class="dp-range-label" id="dp-range-label">Select dates</span>
+            <button class="dp-confirm" onclick="confirmDates()">Confirm</button>
           </div>
-        </button>
-
-        <button class="search-btn" onclick="doSearch()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          Search
-        </button>
+        </div>
       </div>
 
       <div class="hero-stats">
@@ -1231,32 +1339,103 @@ async function handleContactSubmit(e) {
   }
 }
 
-/* ── Search bar helpers ────────────────────────── */
-const TYPES = ['All types','SUVs','Sedans','Pickup','Luxury','Vans','Electric'];
-let typeIdx = 0;
-function cycleType() {
-  typeIdx = (typeIdx + 1) % TYPES.length;
-  document.getElementById('sf-type-label').textContent = TYPES[typeIdx];
+/* ── Type Dropdown ─────────────────────────────── */
+function toggleTypeDropdown() {
+  closeDatePicker();
+  document.getElementById('sf-type-dropdown').classList.toggle('open');
 }
+function selectType(el, label, icon) {
+  document.getElementById('sf-type-label').textContent = label;
+  document.getElementById('sf-type-icon').textContent = icon;
+  document.querySelectorAll('.sf-dropdown-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('sf-type-dropdown').classList.remove('open');
+}
+function closeTypeDropdown() {
+  document.getElementById('sf-type-dropdown').classList.remove('open');
+}
+
+/* ── Date Picker ───────────────────────────────── */
+let dpStart = null, dpEnd = null;
+let dpViewYear = new Date().getFullYear(), dpViewMonth = new Date().getMonth();
+
+function toggleDatePicker() {
+  closeTypeDropdown();
+  const dp = document.getElementById('sf-date-picker');
+  const wasOpen = dp.classList.contains('open');
+  dp.classList.toggle('open');
+  if (!wasOpen) renderCalendar();
+}
+function closeDatePicker() {
+  document.getElementById('sf-date-picker').classList.remove('open');
+}
+function dpPrevMonth() {
+  dpViewMonth--; if (dpViewMonth < 0) { dpViewMonth = 11; dpViewYear--; }
+  renderCalendar();
+}
+function dpNextMonth() {
+  dpViewMonth++; if (dpViewMonth > 11) { dpViewMonth = 0; dpViewYear++; }
+  renderCalendar();
+}
+function renderCalendar() {
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('dp-month-label').textContent = MONTHS[dpViewMonth] + ' ' + dpViewYear;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const firstDay = new Date(dpViewYear, dpViewMonth, 1).getDay();
+  const daysInMonth = new Date(dpViewYear, dpViewMonth + 1, 0).getDate();
+  let html = '';
+  for (let i = 0; i < firstDay; i++) html += '<button class="dp-day dp-empty"></button>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(dpViewYear, dpViewMonth, d);
+    let cls = 'dp-day';
+    if (date < today) { cls += ' dp-past'; }
+    else {
+      if (date.toDateString() === today.toDateString()) cls += ' dp-today';
+      if (dpStart && date.toDateString() === dpStart.toDateString()) cls += ' dp-start';
+      if (dpEnd   && date.toDateString() === dpEnd.toDateString())   cls += ' dp-end';
+      if (dpStart && dpEnd && date > dpStart && date < dpEnd)        cls += ' dp-in-range';
+    }
+    html += `<button class="${cls}" onclick="dpPickDay(event,${dpViewYear},${dpViewMonth},${d})">${d}</button>`;
+  }
+  document.getElementById('dp-grid').innerHTML = html;
+  const fmt = d => d.toLocaleDateString('en-CA',{month:'short',day:'numeric'});
+  document.getElementById('dp-range-label').textContent =
+    dpStart && dpEnd  ? fmt(dpStart) + ' – ' + fmt(dpEnd) :
+    dpStart           ? fmt(dpStart) + ' → pick end date' : 'Select dates';
+}
+function dpPickDay(e, y, m, d) {
+  e.stopPropagation();
+  const date = new Date(y, m, d);
+  if (!dpStart || (dpStart && dpEnd) || date < dpStart) { dpStart = date; dpEnd = null; }
+  else { dpEnd = date; renderCalendar(); setTimeout(confirmDates, 280); return; }
+  renderCalendar();
+}
+function confirmDates() {
+  if (dpStart) {
+    const fmt = d => d.toLocaleDateString('en-CA',{month:'short',day:'numeric'});
+    document.getElementById('sf-dates-sub').textContent = dpEnd ? fmt(dpStart) + ' – ' + fmt(dpEnd) : fmt(dpStart);
+  }
+  closeDatePicker();
+}
+
+/* ── Location prompt ───────────────────────────── */
 function promptLocation() {
   const sub = document.getElementById('sf-loc-sub');
   const val = prompt('Enter city, airport, or address:', sub.textContent === 'City, airport, or address' ? '' : sub.textContent);
   if (val) sub.textContent = val;
 }
-function promptDates() {
-  const sub = document.getElementById('sf-dates-sub');
-  const d1 = new Date(); d1.setDate(d1.getDate()+3);
-  const d2 = new Date(); d2.setDate(d2.getDate()+6);
-  const fmt = d => d.toLocaleDateString('en-CA',{month:'short',day:'numeric'});
-  sub.textContent = fmt(d1) + ' – ' + fmt(d2);
-}
+function promptDates() { toggleDatePicker(); }
+
+/* ── Close panels on outside click ────────────── */
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#sf-type-btn') && !e.target.closest('#sf-type-dropdown')) closeTypeDropdown();
+  if (!e.target.closest('#sf-dates-btn') && !e.target.closest('#sf-date-picker'))  closeDatePicker();
+});
+
 function doSearch() {
   const loc = document.getElementById('sf-loc-sub').textContent;
-  if (loc === 'City, airport, or address') {
-    promptLocation();
-  } else {
-    openBrowse('executive');
-  }
+  if (loc === 'City, airport, or address') { promptLocation(); }
+  else { openBrowse('executive'); }
 }
 
 /* ── Scroll reveal ─────────────────────────────── */
