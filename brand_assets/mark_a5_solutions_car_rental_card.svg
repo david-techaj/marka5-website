@@ -1,0 +1,65 @@
+<svg width="100%" viewBox="0 0 680 420" role="img" xmlns="http://www.w3.org/2000/svg" style="">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Mark A5 Solutions Inc. — Car Rental</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Professional logo card for Mark A5 Solutions Inc. car rental with dark background and gold branding</desc>
+
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1714"/>
+      <stop offset="100%" stop-color="#2c2720"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8c96a"/>
+      <stop offset="50%" stop-color="#c9973a"/>
+      <stop offset="100%" stop-color="#a8762a"/>
+    </linearGradient>
+    <linearGradient id="accentGold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e8c96a"/>
+      <stop offset="100%" stop-color="#c9973a"/>
+    </linearGradient>
+    <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0d880"/>
+      <stop offset="40%" stop-color="#c9973a"/>
+      <stop offset="100%" stop-color="#8a6020"/>
+    </linearGradient>
+    <filter id="softShadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="goldGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#c9973a" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background card -->
+  <rect x="30" y="20" width="620" height="380" rx="16" fill="url(#bgGrad)" filter="url(#softShadow)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Corner accent top-right -->
+  <polygon points="580,20 650,20 650,90" fill="#c9973a" opacity="0.85" style="fill:rgb(201, 151, 58);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.85;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <polygon points="610,20 650,20 650,60" fill="#e8c96a" opacity="0.5" style="fill:rgb(232, 201, 106);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Side accent lines -->
+  <line x1="645" y1="100" x2="645" y2="200" stroke="#c9973a" stroke-width="1.5" opacity="0.6" style="fill:rgb(0, 0, 0);stroke:rgb(201, 151, 58);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <line x1="640" y1="115" x2="640" y2="185" stroke="#e8c96a" stroke-width="0.8" opacity="0.4" style="fill:rgb(0, 0, 0);stroke:rgb(232, 201, 106);color:rgb(255, 255, 255);stroke-width:0.8px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Bottom left subtle accent -->
+  <polygon points="30,340 30,400 90,400" fill="#c9973a" opacity="0.15" style="fill:rgb(201, 151, 58);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.15;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- A5 large icon mark -->
+  <text x="340" y="165" font-family="'Georgia', serif" font-size="120" font-weight="700" text-anchor="middle" fill="url(#shimmer)" filter="url(#goldGlow)" letter-spacing="-4" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, serif;font-size:120px;font-weight:700;text-anchor:middle;dominant-baseline:auto">A5</text>
+
+  <!-- Company name -->
+  <text x="340" y="225" font-family="'Arial', 'Helvetica Neue', sans-serif" font-size="32" font-weight="700" text-anchor="middle" fill="url(#goldGrad)" letter-spacing="4" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Arial, &quot;Helvetica Neue&quot;, sans-serif;font-size:32px;font-weight:700;text-anchor:middle;dominant-baseline:auto">MARK A5</text>
+  <text x="340" y="263" font-family="'Arial', 'Helvetica Neue', sans-serif" font-size="32" font-weight="700" text-anchor="middle" fill="url(#goldGrad)" letter-spacing="4" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Arial, &quot;Helvetica Neue&quot;, sans-serif;font-size:32px;font-weight:700;text-anchor:middle;dominant-baseline:auto">SOLUTIONS INC.</text>
+
+  <!-- Car rental label -->
+  <text x="340" y="298" font-family="'Arial', 'Helvetica Neue', sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#c9973a" letter-spacing="5" opacity="0.8" style="fill:rgb(201, 151, 58);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.8;font-family:Arial, &quot;Helvetica Neue&quot;, sans-serif;font-size:13px;font-weight:400;text-anchor:middle;dominant-baseline:auto">CAR RENTAL</text>
+
+  <!-- Gold rule -->
+  <line x1="80" y1="315" x2="600" y2="315" stroke="url(#accentGold)" stroke-width="0.8" opacity="0.5" style="fill:rgb(0, 0, 0);color:rgb(255, 255, 255);stroke-width:0.8px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Tagline -->
+  <text x="340" y="348" font-family="'Georgia', serif" font-size="17" font-weight="400" text-anchor="middle" fill="#d4b870" letter-spacing="1" opacity="0.9" style="fill:rgb(212, 184, 112);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.9;font-family:Georgia, serif;font-size:17px;font-weight:400;text-anchor:middle;dominant-baseline:auto">Your Journey. Our Pleasure. Every Mile.</text>
+
+  <!-- Dot ornaments -->
+  <circle cx="115" cy="344" r="2.5" fill="#c9973a" opacity="0.6" style="fill:rgb(201, 151, 58);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="565" cy="344" r="2.5" fill="#c9973a" opacity="0.6" style="fill:rgb(201, 151, 58);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+</svg>

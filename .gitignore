@@ -1,0 +1,19 @@
+# Environment variables — never commit these
+.env
+.env.local
+.env.*
+
+# macOS noise
+.DS_Store
+.AppleDouble
+
+# Temp files
+.tmp/
+temporary screenshots/
+
+# Logs
+*.log
+
+# Large screenshots not part of the site
+Screenshot*.png
+turo.com_*.png
