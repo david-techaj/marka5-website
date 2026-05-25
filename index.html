@@ -94,7 +94,20 @@
       margin: 0 auto;
     }
 
-    /* "Rental reinvented" heading */
+    /* Glow effect for the "car" word in the hero title */
+    @keyframes glow-pulse {
+      0%, 100% { filter: drop-shadow(0 0 14px rgba(232,201,106,.7)) drop-shadow(0 0 32px rgba(201,151,58,.4)); }
+      50%       { filter: drop-shadow(0 0 26px rgba(232,201,106,1))  drop-shadow(0 0 56px rgba(201,151,58,.65)); }
+    }
+    .glow-text {
+      background: linear-gradient(135deg, #fff5c0 0%, #f0d880 30%, #e8c96a 60%, #c9973a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+
+    /* Hero heading */
     .hero-title {
       font-family: Georgia, serif;
       font-size: clamp(2.6rem, 7vw, 4.8rem);
@@ -444,7 +457,7 @@
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Rental <span class="gold-text">reinvented</span></h1>
+      <h1 class="hero-title">Book your <span class="glow-text">car</span></h1>
       <p class="hero-sub">Discover the perfect rental car near you — transparent pricing, zero hassle.</p>
 
       <!-- Search bar -->
