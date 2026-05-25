@@ -1075,11 +1075,14 @@ function toggleMobile() { document.getElementById('mobileNav').classList.toggle(
 function closeMobile()  { document.getElementById('mobileNav').classList.remove('open'); }
 
 /* ── View switching ────────────────────────────── */
+let _historyNav = false;
+
 function showLanding() {
   document.getElementById('landing').style.display = '';
   document.getElementById('browseView').classList.remove('active');
   document.getElementById('carView').classList.remove('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (!_historyNav) history.pushState({ view: 'landing' }, '');
 }
 
 function showBrowse() {
@@ -1147,6 +1150,7 @@ function openBrowse(catKey) {
   }
 
   showBrowse();
+  if (!_historyNav) history.pushState({ view: 'browse', cat: catKey }, '');
 }
 
 /* ── Open individual car ────────────────────────── */
@@ -1213,6 +1217,7 @@ function openCar(catKey, carId) {
   calcPrice();
 
   showCar();
+  if (!_historyNav) history.pushState({ view: 'car', cat: currentCategory, car: currentCar.id }, '');
 }
 
 function goBackToBrowse() { openBrowse(currentCategory); }
@@ -1426,6 +1431,17 @@ function doSearch() {
   if (loc === 'City, airport, or address') { promptLocation(); }
   else { openBrowse('executive'); }
 }
+
+/* ── Browser back / forward ────────────────────── */
+history.replaceState({ view: 'landing' }, '');
+window.addEventListener('popstate', function(e) {
+  const s = e.state;
+  _historyNav = true;
+  if (!s || s.view === 'landing') { showLanding(); }
+  else if (s.view === 'browse')   { openBrowse(s.cat); }
+  else if (s.view === 'car')      { openCar(s.cat, s.car); }
+  _historyNav = false;
+});
 
 /* ── Scroll reveal ─────────────────────────────── */
 const observer = new IntersectionObserver(entries =>
