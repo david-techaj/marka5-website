@@ -1082,7 +1082,7 @@ function showLanding() {
   document.getElementById('browseView').classList.remove('active');
   document.getElementById('carView').classList.remove('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  if (!_historyNav) history.pushState({ view: 'landing' }, '');
+  if (!_historyNav) history.pushState({ view: 'landing' }, '', window.location.pathname);
 }
 
 function showBrowse() {
@@ -1150,7 +1150,7 @@ function openBrowse(catKey) {
   }
 
   showBrowse();
-  if (!_historyNav) history.pushState({ view: 'browse', cat: catKey }, '');
+  if (!_historyNav) history.pushState({ view: 'browse', cat: catKey }, '', '#browse/' + catKey);
 }
 
 /* ── Open individual car ────────────────────────── */
@@ -1217,7 +1217,7 @@ function openCar(catKey, carId) {
   calcPrice();
 
   showCar();
-  if (!_historyNav) history.pushState({ view: 'car', cat: currentCategory, car: currentCar.id }, '');
+  if (!_historyNav) history.pushState({ view: 'car', cat: currentCategory, car: currentCar.id }, '', '#car/' + currentCategory + '/' + currentCar.id);
 }
 
 function goBackToBrowse() { openBrowse(currentCategory); }
@@ -1263,18 +1263,60 @@ function calcPrice() {
 }
 
 /* ── Submit booking ────────────────────────────── */
-function submitBooking() {
-  const name  = document.getElementById('bkName').value.trim();
-  const phone = document.getElementById('bkPhone').value.trim();
-  const email = document.getElementById('bkEmail').value.trim();
-  const pickup = document.getElementById('bkPickupDate').value;
-  const ret    = document.getElementById('bkReturnDate').value;
+async function submitBooking() {
+  const name     = document.getElementById('bkName').value.trim();
+  const phone    = document.getElementById('bkPhone').value.trim();
+  const email    = document.getElementById('bkEmail').value.trim();
+  const pickup   = document.getElementById('bkPickupDate').value;
+  const ret      = document.getElementById('bkReturnDate').value;
+  const pickTime = document.getElementById('bkPickupTime').value;
+  const retTime  = document.getElementById('bkReturnTime').value;
+  const location = document.getElementById('bkLocation').value;
+  const notes    = document.getElementById('bkNotes').value.trim();
+
   if (!name || !email || !pickup || !ret) {
     alert('Please fill in your name, email, and trip dates.');
     return;
   }
-  document.getElementById('bookingFormWrap').style.display = 'none';
-  document.getElementById('bookingSuccess').style.display = 'block';
+
+  const btn = document.querySelector('.booking-submit');
+  const origText = btn.textContent;
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://formspree.io/f/mojbknew', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _subject:        `Booking Request — ${currentCar ? currentCar.name : 'Vehicle'} from ${name}`,
+        name,
+        phone,
+        email,
+        vehicle:         currentCar ? currentCar.name : '',
+        category:        currentCategory || '',
+        pickup_date:     pickup,
+        pickup_time:     pickTime,
+        return_date:     ret,
+        return_time:     retTime,
+        pickup_location: location,
+        notes
+      })
+    });
+    if (res.ok) {
+      document.getElementById('bookingFormWrap').style.display = 'none';
+      document.getElementById('bookingSuccess').style.display = 'block';
+    } else {
+      const data = await res.json();
+      alert(data.errors ? data.errors.map(e => e.message).join(', ') : 'Submission failed. Please try again.');
+      btn.textContent = origText;
+      btn.disabled = false;
+    }
+  } catch {
+    alert('Network error. Please check your connection and try again.');
+    btn.textContent = origText;
+    btn.disabled = false;
+  }
 }
 
 /* ── Contact form → Formspree ──────────────────── */
@@ -1432,8 +1474,23 @@ function doSearch() {
   else { openBrowse('executive'); }
 }
 
-/* ── Browser back / forward ────────────────────── */
-history.replaceState({ view: 'landing' }, '');
+/* ── Browser back / forward + refresh restore ───── */
+history.replaceState({ view: 'landing' }, '', window.location.pathname + window.location.hash);
+
+// Restore the correct view when the page is hard-refreshed with a hash in the URL
+(function restoreFromHash() {
+  const hash = window.location.hash;
+  if (!hash || hash === '#') return;
+  const parts = hash.slice(1).split('/');
+  _historyNav = true;
+  if (parts[0] === 'browse' && parts[1] && CATEGORIES[parts[1]]) {
+    openBrowse(parts[1]);
+  } else if (parts[0] === 'car' && parts[1] && parts[2] && CATEGORIES[parts[1]]) {
+    openCar(parts[1], parts[2]);
+  }
+  _historyNav = false;
+})();
+
 window.addEventListener('popstate', function(e) {
   const s = e.state;
   _historyNav = true;
