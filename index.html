@@ -426,6 +426,28 @@
     .car-rule { display:flex; align-items:flex-start; gap:.6rem; font-size:.87rem; color:var(--muted); line-height:1.45; }
     .car-rule-icon { flex-shrink:0; font-size:.95rem; margin-top:.05rem; }
 
+    /* Reviews */
+    .reviews-section { margin-top:2.8rem; }
+    .reviews-section-title { font-family:Georgia,serif; font-size:1.15rem; font-weight:700; color:var(--gold-lt); margin-bottom:1.2rem; }
+    .reviews-avg-row { display:flex; align-items:center; gap:.8rem; margin-bottom:1.4rem; }
+    .reviews-avg-score { font-size:2rem; font-weight:700; color:var(--gold-lt); font-family:Georgia,serif; }
+    .reviews-avg-stars { font-size:1.15rem; letter-spacing:.05em; }
+    .reviews-avg-count { font-size:.85rem; color:var(--muted); }
+    .review-card { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:1rem 1.2rem; margin-bottom:.9rem; }
+    .review-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:.4rem; }
+    .review-card-name { font-weight:700; font-size:.92rem; }
+    .review-card-date { font-size:.78rem; color:var(--muted); }
+    .review-card-stars { font-size:1rem; letter-spacing:.04em; margin-bottom:.45rem; }
+    .review-card-text { font-size:.88rem; color:var(--muted); line-height:1.55; }
+    .review-form { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:1.2rem; margin-top:1.4rem; }
+    .review-form-title { font-weight:700; font-size:.95rem; margin-bottom:.9rem; color:var(--text); }
+    .review-form-stars { display:flex; gap:.25rem; margin-bottom:.9rem; }
+    .review-star { font-size:1.6rem; cursor:pointer; color:var(--muted); transition:color .15s; line-height:1; }
+    .review-star.lit { color:var(--gold); }
+    .review-form input,.review-form textarea { margin-bottom:.7rem; }
+    .review-form textarea { resize:vertical; min-height:80px; }
+    .reviews-empty { font-size:.88rem; color:var(--muted); padding:.5rem 0 1rem; }
+
     /* Booking panel */
     .booking-panel { background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:1.8rem; position:sticky; top:calc(var(--nav-h) + 24px); }
     .booking-panel-title { font-family:Georgia,serif; font-size:1.3rem; font-weight:700; margin-bottom:.3rem; }
@@ -729,7 +751,7 @@
         </div>
         <div class="cta-actions">
           <button class="btn btn-primary" onclick="openBrowse('executive')">Book Now</button>
-          <a href="tel:+14160000000" class="btn btn-outline">&#128222; Call Us</a>
+          <a href="tel:+14376795686" class="btn btn-outline">&#128222; Call Us</a>
         </div>
       </div>
     </div>
@@ -747,7 +769,7 @@
           <p class="section-sub" style="max-width:100%;">Whether you need a quick city car or a premium SUV for a corporate event, our team is ready to help you find the perfect solution.</p>
           <div class="contact-info-items">
             <div class="contact-item"><div class="contact-icon">&#128205;</div><div><div class="contact-label">Location</div><div class="contact-val">Toronto, ON, Canada</div></div></div>
-            <div class="contact-item"><div class="contact-icon">&#128222;</div><div><div class="contact-label">Phone</div><div class="contact-val">+1 (416) 000-0000</div></div></div>
+            <div class="contact-item"><div class="contact-icon">&#128222;</div><div><div class="contact-label">Phone</div><div class="contact-val">+1 (437) 679-5686</div></div></div>
             <div class="contact-item"><div class="contact-icon">&#128140;</div><div><div class="contact-label">Email</div><div class="contact-val">marka5solution@gmail.com</div></div></div>
             <div class="contact-item"><div class="contact-icon">&#128336;</div><div><div class="contact-label">Hours</div><div class="contact-val">Mon – Sat: 7am – 9pm<br>Sun: 9am – 6pm</div></div></div>
           </div>
@@ -799,7 +821,7 @@
         <div>
           <div class="footer-col-title">Contact</div>
           <ul class="footer-links">
-            <li><a href="tel:+14160000000">+1 (416) 000-0000</a></li>
+            <li><a href="tel:+14376795686">+1 (437) 679-5686</a></li>
             <li><a href="mailto:marka5solution@gmail.com">marka5solution@gmail.com</a></li>
             <li style="color:var(--muted);font-size:.88rem;">Toronto, ON, Canada</li>
           </ul>
@@ -869,6 +891,7 @@
             <div class="car-features-list" id="carFeaturesList"></div>
             <div class="car-rules-title">Rental Rules</div>
             <div class="car-rules-list" id="carRulesList"></div>
+            <div class="reviews-section" id="carReviews"></div>
           </div>
         </div>
 
@@ -1256,6 +1279,8 @@ function openCar(catKey, carId) {
   document.getElementById('bkReturnDate').value = tomorrow;
   calcPrice();
 
+  renderReviews(car.id);
+
   showCar();
   if (!_historyNav) history.pushState({ view: 'car', cat: currentCategory, car: currentCar.id }, '', '#car/' + currentCategory + '/' + currentCar.id);
 }
@@ -1545,6 +1570,89 @@ const observer = new IntersectionObserver(entries =>
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
   { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── Reviews ───────────────────────────────────── */
+let _reviewRating = 0;
+
+function getReviews(carId) {
+  try { return JSON.parse(localStorage.getItem('reviews_' + carId) || '[]'); } catch(e) { return []; }
+}
+function saveReviews(carId, list) {
+  localStorage.setItem('reviews_' + carId, JSON.stringify(list));
+}
+
+function starsHtml(rating, total) {
+  let s = '';
+  for (let i = 1; i <= 5; i++) s += i <= rating ? '★' : '☆';
+  return s;
+}
+
+function renderReviews(carId) {
+  const el = document.getElementById('carReviews');
+  if (!el) return;
+  _reviewRating = 0;
+  const reviews = getReviews(carId);
+  const avg = reviews.length ? (reviews.reduce((a,r) => a + r.rating, 0) / reviews.length) : 0;
+
+  const cardsHtml = reviews.length
+    ? reviews.slice().reverse().map(r => `
+        <div class="review-card">
+          <div class="review-card-top">
+            <div class="review-card-name">${r.name}</div>
+            <div class="review-card-date">${r.date}</div>
+          </div>
+          <div class="review-card-stars" style="color:var(--gold)">${starsHtml(r.rating)}</div>
+          <div class="review-card-text">${r.comment}</div>
+        </div>`).join('')
+    : `<div class="reviews-empty">No reviews yet — be the first!</div>`;
+
+  const avgHtml = reviews.length ? `
+    <div class="reviews-avg-row">
+      <div class="reviews-avg-score">${avg.toFixed(1)}</div>
+      <div>
+        <div class="reviews-avg-stars" style="color:var(--gold)">${starsHtml(Math.round(avg))}</div>
+        <div class="reviews-avg-count">${reviews.length} review${reviews.length !== 1 ? 's' : ''}</div>
+      </div>
+    </div>` : '';
+
+  el.innerHTML = `
+    <div class="reviews-section-title">Customer Reviews</div>
+    ${avgHtml}
+    ${cardsHtml}
+    <div class="review-form">
+      <div class="review-form-title">Leave a Review</div>
+      <div class="review-form-stars" id="reviewStars">
+        ${[1,2,3,4,5].map(i => `<span class="review-star" data-v="${i}" onclick="setReviewRating(${i},'${carId}')">★</span>`).join('')}
+      </div>
+      <input type="text" id="reviewName" placeholder="Your name" maxlength="60" />
+      <textarea id="reviewComment" placeholder="Share your experience with this vehicle…" maxlength="500"></textarea>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitReview('${carId}')">Post Review</button>
+    </div>`;
+}
+
+function setReviewRating(val, carId) {
+  _reviewRating = val;
+  document.querySelectorAll('#reviewStars .review-star').forEach((s, i) => {
+    s.classList.toggle('lit', i < val);
+  });
+}
+
+function submitReview(carId) {
+  const name = (document.getElementById('reviewName').value || '').trim();
+  const comment = (document.getElementById('reviewComment').value || '').trim();
+  if (!name) { alert('Please enter your name.'); return; }
+  if (!_reviewRating) { alert('Please select a star rating.'); return; }
+  if (!comment) { alert('Please write a comment.'); return; }
+  const reviews = getReviews(carId);
+  reviews.push({
+    name,
+    rating: _reviewRating,
+    comment,
+    date: new Date().toLocaleDateString('en-CA', { year:'numeric', month:'short', day:'numeric' })
+  });
+  saveReviews(carId, reviews);
+  renderReviews(carId);
+}
 
 /* ── Date init ─────────────────────────────────── */
 const today = new Date().toISOString().split('T')[0];
