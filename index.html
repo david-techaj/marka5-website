@@ -547,16 +547,6 @@
 
           <div class="sf-divider"></div>
 
-          <button class="sf" style="flex:1.8;" onclick="promptLocation()">
-            <span class="sf-icon">📍</span>
-            <div class="sf-body">
-              <div class="sf-label">Where to?</div>
-              <div class="sf-sub" id="sf-loc-sub">City, airport, or address</div>
-            </div>
-          </button>
-
-          <div class="sf-divider"></div>
-
           <button class="sf" style="flex:1.4;" id="sf-dates-btn" onclick="toggleDatePicker()">
             <span class="sf-icon">📅</span>
             <div class="sf-body">
@@ -575,12 +565,10 @@
 
         <!-- Type dropdown panel -->
         <div class="sf-dropdown" id="sf-type-dropdown">
-          <button class="sf-dropdown-item active" onclick="selectType(this,'All types','🚗')"><span class="di-icon">🚗</span> All types</button>
-          <button class="sf-dropdown-item" onclick="selectType(this,'SUVs','🛻')"><span class="di-icon">🛻</span> SUVs</button>
-          <button class="sf-dropdown-item" onclick="selectType(this,'Sedans','🚙')"><span class="di-icon">🚙</span> Sedans</button>
+          <button class="sf-dropdown-item" onclick="selectType(this,'SUVs','🚙')"><span class="di-icon">🚙</span> SUVs</button>
+          <button class="sf-dropdown-item" onclick="selectType(this,'Sedans','🚗')"><span class="di-icon">🚗</span> Sedans</button>
           <button class="sf-dropdown-item" onclick="selectType(this,'Luxury','✨')"><span class="di-icon">✨</span> Luxury</button>
-          <button class="sf-dropdown-item" onclick="selectType(this,'Vans','🚐')"><span class="di-icon">🚐</span> Vans</button>
-          <button class="sf-dropdown-item" onclick="selectType(this,'Electric','⚡')"><span class="di-icon">⚡</span> Electric</button>
+          <button class="sf-dropdown-item" onclick="selectType(this,'Truck','🛻')"><span class="di-icon">🛻</span> Truck</button>
         </div>
 
         <!-- Date picker panel -->
