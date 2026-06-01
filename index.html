@@ -266,7 +266,7 @@
     .strip-desc { font-size:.82rem; color:var(--muted); }
 
     /* ══ FLEET ═══════════════════════════════════════════ */
-    .fleet-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:3.5rem; }
+    .fleet-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:3.5rem; }
     .fleet-card { background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:transform .3s,box-shadow .3s,border-color .3s; cursor:pointer; display:flex; flex-direction:column; }
     .fleet-card:hover { transform:translateY(-6px); box-shadow:0 16px 48px rgba(0,0,0,.45),0 0 24px rgba(201,151,58,.1); border-color:rgba(201,151,58,.45); }
     .fleet-img { height:160px; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:4.5rem; position:relative; overflow:hidden; }
@@ -630,7 +630,7 @@
             <div class="fleet-name">City Compact</div>
             <div class="fleet-desc">Nimble, fuel-efficient, and easy to park. Perfect for urban errands and airport runs.</div>
             <div class="fleet-price"><span class="price-from">From</span><span class="price-val">$75 CAD</span><span class="price-per">/ day</span></div>
-            <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openBrowse('economy')">Browse Available &#8594;</button>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openBrowse('economy')">Browse Available &#8594;</button>
           </div>
         </div>
 
@@ -641,7 +641,7 @@
             <div class="fleet-name">Family SUV</div>
             <div class="fleet-desc">Spacious and versatile — handles long highway drives and weekend adventures with ease.</div>
             <div class="fleet-price"><span class="price-from">From</span><span class="price-val">$120 CAD</span><span class="price-per">/ day</span></div>
-            <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openBrowse('suv')">Browse Available &#8594;</button>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openBrowse('suv')">Browse Available &#8594;</button>
           </div>
         </div>
 
@@ -656,6 +656,16 @@
           </div>
         </div>
 
+        <div class="fleet-card reveal reveal-delay-3" onclick="openBrowse('truck')">
+          <div class="fleet-img">🛻</div>
+          <div class="fleet-body">
+            <div class="fleet-category">Truck</div>
+            <div class="fleet-name">Ford F-150 Sport</div>
+            <div class="fleet-desc">GPS, Tonneau Cover, Heated Seats, Side Steps, SiriusXM, Apple &amp; Google CarPlay. 4x4 automatic — ready for any job.</div>
+            <div class="fleet-price"><span class="price-from">From</span><span class="price-val">$150 CAD</span><span class="price-per">/ day</span></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openBrowse('truck')">Browse Available &#8594;</button>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -1046,8 +1056,48 @@ const CATEGORIES = {
   },
   truck: {
     name: 'Truck', emoji: '🛻',
-    desc: 'Heavy-duty trucks — coming soon',
-    cars: []
+    desc: 'Work & haul trucks starting at $150 CAD/day',
+    cars: [
+      {
+        id: 'ford-f150-sport-x8868a',
+        make: 'Ford',
+        name: 'Ford F-150 Sport',
+        subtitle: 'Offer #X8868A · 4x4 · Automatic · Gasoline',
+        pricePerDay: 150,
+        available: true,
+        specs: {
+          Year: '2020s', Seats: '5 Passengers', Transmission: 'Automatic',
+          Drivetrain: '4x4', 'Body Type': 'Pick-up Truck', Doors: '4'
+        },
+        rules: [
+          { icon: '🚫', text: 'No off-road or unpaved road use beyond normal 4x4 conditions without prior approval.' },
+          { icon: '✨', text: 'Return the vehicle in the same clean condition as pickup. A cleaning fee of $75+ may apply.' },
+          { icon: '🚭', text: 'Strictly no smoking inside the vehicle. A $200 deodorization fee applies.' },
+          { icon: '🐾', text: 'No pets unless pre-approved in writing. Unauthorized pets incur a $100 cleaning fee.' },
+          { icon: '📍', text: 'Vehicle must remain within the Greater Toronto Area (GTA). No trips outside the GTA without prior written approval.' },
+          { icon: '🪪', text: 'Driver must be 21 years or older with a valid driver\'s licence (Canadian or internationally recognized).' },
+          { icon: '💳', text: 'A valid credit card is required for the security deposit at pickup.' },
+          { icon: '👤', text: 'No additional or unauthorized drivers. All drivers must be approved before the rental begins.' },
+          { icon: '⛽', text: 'Return with the same fuel level as at pickup. Refuelling fee applies if returned below level.' },
+          { icon: '⚠️', text: 'Any damage must be reported immediately. Undisclosed damage discovered on return is the renter\'s full responsibility.' }
+        ],
+        features: [
+          'GPS Navigation', 'Tonneau Cover',
+          'Heated Seats', 'Side Steps',
+          'SiriusXM Radio', 'Apple CarPlay',
+          'Android Auto', '4x4 Drivetrain',
+          'Automatic Transmission', 'Gasoline Engine',
+          'Pick-up Truck Bed', 'Used · Well Maintained'
+        ],
+        photos: [
+          'IMG_5227.jpg','IMG_5228.jpg','IMG_5229.jpg','IMG_5230.jpg',
+          'IMG_5231.jpg','IMG_5232.jpg','IMG_5233.jpg','IMG_5234.jpg',
+          'IMG_5235.jpg','IMG_5236.jpg','IMG_5237.jpg','IMG_5238.jpg',
+          'IMG_5239.jpg','IMG_5240.jpg','IMG_5241.jpg','IMG_5242.jpg',
+          'IMG_5243.jpg','IMG_5244.jpg','IMG_5245.jpg','IMG_5246.jpg'
+        ]
+      }
+    ]
   }
 };
 
