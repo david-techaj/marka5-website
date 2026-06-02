@@ -1602,7 +1602,7 @@ history.replaceState({ view: 'landing' }, '', window.location.pathname + window.
   var saved = sessionStorage.getItem('savedView');
   var hash  = window.location.hash;
   var state = null;
-  if (saved) { try { state = JSON.parse(saved); } catch(e){} }
+  if (saved) { try { state = JSON.parse(saved); } catch(e){ console.error('[restore] parse error', e); } }
   if (!state && hash && hash.length > 1) {
     var parts = hash.slice(1).split('/');
     if (parts[0] === 'browse' && parts[1]) state = {view:'browse',cat:parts[1]};
