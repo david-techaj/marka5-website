@@ -459,7 +459,7 @@
     .booking-price-big { font-family:Georgia,serif; font-size:2rem; font-weight:700; color:var(--gold-lt); }
     .booking-price-unit { font-size:.85rem; color:var(--muted); }
     .booking-field { margin-bottom:1rem; }
-    .booking-row { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-bottom:1rem; }
+    .booking-row { display:grid; grid-template-columns:1fr; margin-bottom:0; }
     .booking-summary { background:rgba(201,151,58,.06); border:1px solid var(--border); border-radius:10px; padding:1rem; margin:1.2rem 0; }
     .booking-summary-row { display:flex; justify-content:space-between; font-size:.88rem; color:var(--muted); margin-bottom:.4rem; }
     .booking-summary-row:last-child { margin-bottom:0; font-weight:700; color:var(--text); border-top:1px solid var(--border); padding-top:.4rem; margin-top:.4rem; }
@@ -527,7 +527,7 @@
       .booking-price-big { font-size:2.4rem; }
       .fleet-img { height:160px; }
       .car-card-img { height:220px; }
-      .booking-row { grid-template-columns:1fr; }
+
       .search-bar { border-radius:16px; flex-direction:column; padding:8px; }
       .sf { border-radius:10px; border:1px solid var(--border); }
       .sf-divider { display:none; }
@@ -1032,14 +1032,6 @@
      JAVASCRIPT
 ══════════════════════════════════════════════════ -->
 <script>
-/* Hide landing immediately if session or hash indicates a non-landing view */
-(function(){
-  var saved=sessionStorage.getItem('savedView');
-  var h=window.location.hash;
-  if(saved||(h&&(h.indexOf('#browse/')===0||h.indexOf('#car/')===0))){
-    document.getElementById('landing').style.display='none';
-  }
-})();
 
 /* ── Fleet Data ────────────────────────────────── */
 const CATEGORIES = {
@@ -1597,12 +1589,12 @@ function doSearch() {
 /* ── Browser back / forward + refresh restore ───── */
 history.replaceState({ view: 'landing' }, '', window.location.pathname + window.location.hash);
 
-// Restore view on refresh — try sessionStorage first, fall back to hash
+// Restore view on refresh — sessionStorage first, hash as fallback
 (function restoreView() {
   var saved = sessionStorage.getItem('savedView');
   var hash  = window.location.hash;
   var state = null;
-  if (saved) { try { state = JSON.parse(saved); } catch(e){ console.error('[restore] parse error', e); } }
+  if (saved) { try { state = JSON.parse(saved); } catch(e){} }
   if (!state && hash && hash.length > 1) {
     var parts = hash.slice(1).split('/');
     if (parts[0] === 'browse' && parts[1]) state = {view:'browse',cat:parts[1]};
@@ -1610,18 +1602,10 @@ history.replaceState({ view: 'landing' }, '', window.location.pathname + window.
   }
   if (!state) return;
   _historyNav = true;
-  try {
-    if (state.view === 'browse' && CATEGORIES[state.cat]) {
-      openBrowse(state.cat);
-    } else if (state.view === 'car' && CATEGORIES[state.cat]) {
-      openCar(state.cat, state.car);
-    } else {
-      document.getElementById('landing').style.display = '';
-    }
-  } catch(e) {
-    document.getElementById('landing').style.display = '';
-    document.getElementById('browseView').classList.remove('active');
-    document.getElementById('carView').classList.remove('active');
+  if (state.view === 'browse' && CATEGORIES[state.cat]) {
+    try { openBrowse(state.cat); } catch(e) { document.title = 'ERR:'+e.message; }
+  } else if (state.view === 'car' && CATEGORIES[state.cat]) {
+    try { openCar(state.cat, state.car); } catch(e) { document.title = 'ERR:'+e.message; }
   }
   _historyNav = false;
 })();
