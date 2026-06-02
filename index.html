@@ -1581,9 +1581,9 @@ document.addEventListener('click', function(e) {
 });
 
 function doSearch() {
-  const loc = document.getElementById('sf-loc-sub').textContent;
-  if (loc === 'City, airport, or address') { promptLocation(); }
-  else { openBrowse('executive'); }
+  const label = document.getElementById('sf-type-label').textContent.trim();
+  const typeMap = { 'SUVs': 'suv', 'Sedans': 'economy', 'Luxury': 'executive', 'Truck': 'truck' };
+  openBrowse(typeMap[label] || 'executive');
 }
 
 /* ── Browser back / forward + refresh restore ───── */
